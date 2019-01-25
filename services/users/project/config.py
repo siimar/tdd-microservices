@@ -1,3 +1,6 @@
+import os
+
+
 class BaseConfig:
     """Base configuration"""
     TESTING = False
@@ -15,4 +18,4 @@ class TestingConfig(BaseConfig):
 
 class ProductionConfig(BaseConfig):
     """Production configuration"""
-    pass 
+    pass
