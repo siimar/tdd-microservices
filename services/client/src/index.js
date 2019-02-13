@@ -2,8 +2,8 @@ import React, { Component } from 'react';
 import ReactDOM from 'react-dom';
 import axios from 'axios';
 
-import AddUser from './components/AddUser';
 import UsersList from './components/UsersList';
+import AddUser from './components/AddUser';
 
 
 class App extends Component {
@@ -25,18 +25,18 @@ class App extends Component {
     .then((res) => { this.setState({ users: res.data.data.users }); })
     .catch((err) => { console.log(err); });
   };
-    addUser(event) {
+  addUser(event) {
     event.preventDefault();
     const data = {
       username: this.state.username,
       email: this.state.email
     };
     axios.post(`${process.env.REACT_APP_USERS_SERVICE_URL}/users`, data)
-      .then((res) => {
-        this.getUsers();
-        this.setState({ username: '', email: ''})
-      })
-      .catch((err) => { console.log(err) });
+    .then((res) => {
+      this.getUsers();
+      this.setState({ username: '', email: '' });
+    })
+    .catch((err) => { console.log(err); });
   };
   handleChange(event) {
     const obj = {};
@@ -58,7 +58,7 @@ class App extends Component {
                 addUser={this.addUser}
                 handleChange={this.handleChange}
               />
-              <hr/><br/>
+              <br/><br/>
               <UsersList users={this.state.users}/>
             </div>
           </div>
