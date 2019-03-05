@@ -5,6 +5,7 @@ from project.api.models import User
 from project import db, bcrypt
 from project.api.utils import authenticate
 
+
 auth_blueprint = Blueprint('auth', __name__)
 
 

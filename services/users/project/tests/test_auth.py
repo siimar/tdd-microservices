@@ -1,3 +1,6 @@
+# services/users/project/tests/test_auth.py
+
+
 import json
 import unittest
 
@@ -10,6 +13,7 @@ from project.tests.utils import add_user
 
 
 class TestAuthBlueprint(BaseTestCase):
+
     def test_user_registration(self):
         with self.client:
             response = self.client.post(
@@ -69,7 +73,7 @@ class TestAuthBlueprint(BaseTestCase):
             response = self.client.post(
                 '/auth/register',
                 data=json.dumps({}),
-                content_type='application/json',
+                content_type='application/json'
             )
             data = json.loads(response.data.decode())
             self.assertEqual(response.status_code, 400)
@@ -133,8 +137,8 @@ class TestAuthBlueprint(BaseTestCase):
                 content_type='application/json'
             )
             data = json.loads(response.data.decode())
-            self.assertTrue(data['status'], 'success')
-            self.assertTrue(data['message'], 'Successfully logged in.')
+            self.assertTrue(data['status'] == 'success')
+            self.assertTrue(data['message'] == 'Successfully logged in.')
             self.assertTrue(data['auth_token'])
             self.assertTrue(response.content_type == 'application/json')
             self.assertEqual(response.status_code, 200)
@@ -150,14 +154,15 @@ class TestAuthBlueprint(BaseTestCase):
                 content_type='application/json'
             )
             data = json.loads(response.data.decode())
-            self.assertTrue(data['status'], 'fail')
-            self.assertTrue(data['message'], 'User does not exist.')
+            self.assertTrue(data['status'] == 'fail')
+            self.assertTrue(data['message'] == 'User does not exist.')
             self.assertTrue(response.content_type == 'application/json')
             self.assertEqual(response.status_code, 404)
 
     def test_valid_logout(self):
         add_user('test', 'test@test.com', 'test')
         with self.client:
+            # user login
             resp_login = self.client.post(
                 '/auth/login',
                 data=json.dumps({
@@ -242,8 +247,7 @@ class TestAuthBlueprint(BaseTestCase):
         with self.client:
             response = self.client.get(
                 '/auth/status',
-                headers={'Authorization': 'Bearer invalid'}
-            )
+                headers={'Authorization': 'Bearer invalid'})
             data = json.loads(response.data.decode())
             self.assertTrue(data['status'] == 'fail')
             self.assertTrue(
@@ -258,7 +262,7 @@ class TestAuthBlueprint(BaseTestCase):
         db.session.commit()
         with self.client:
             resp_login = self.client.post(
-                'auth/login',
+                '/auth/login',
                 data=json.dumps({
                     'email': 'test@test.com',
                     'password': 'test'
@@ -267,7 +271,7 @@ class TestAuthBlueprint(BaseTestCase):
             )
             token = json.loads(resp_login.data.decode())['auth_token']
             response = self.client.get(
-                'auth/logout',
+                '/auth/logout',
                 headers={'Authorization': f'Bearer {token}'}
             )
             data = json.loads(response.data.decode())

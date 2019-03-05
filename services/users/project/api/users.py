@@ -5,6 +5,7 @@ from project.api.models import User
 from project import db
 from project.api.utils import authenticate, is_admin
 
+
 users_blueprint = Blueprint('users', __name__, template_folder='./templates')
 
 
@@ -14,7 +15,8 @@ def index():
         username = request.form['username']
         email = request.form['email']
         password = request.form['password']
-        db.session.add(User(username=username, email=email, password=password))
+        db.session.add(User(
+            username=username, email=email, password=password))
         db.session.commit()
     users = User.query.all()
     return render_template('index.html', users=users)
@@ -55,7 +57,7 @@ def add_user(resp):
             return jsonify(response_object), 201
         else:
             response_object['message'] = 'Sorry. That email already exists.'
-        return jsonify(response_object), 400
+            return jsonify(response_object), 400
     except (exc.IntegrityError, ValueError):
         db.session.rollback()
         return jsonify(response_object), 400

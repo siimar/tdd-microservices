@@ -1,9 +1,14 @@
+# services/users/manage.py
+
+
+import unittest
+
 import coverage
 from flask.cli import FlaskGroup
-import unittest
 
 from project import create_app, db
 from project.api.models import User
+
 
 COV = coverage.coverage(
     branch=True,
@@ -15,12 +20,11 @@ COV = coverage.coverage(
 )
 COV.start()
 
-
 app = create_app()
 cli = FlaskGroup(create_app=create_app)
 
 
-@cli.command("recreate_db")
+@cli.command('recreate_db')
 def recreate_db():
     db.drop_all()
     db.create_all()
@@ -37,17 +41,17 @@ def test():
     return 1
 
 
-@cli.command("seed_db")
+@cli.command('seed_db')
 def seed_db():
-    """Seeds the database"""
+    """Seeds the database."""
     db.session.add(User(
-        username='test',
-        email='test@foo.ee',
+        username='michael',
+        email='michael@reallynotreal.com',
         password='greaterthaneight'
     ))
     db.session.add(User(
-        username='test1',
-        email='test1@foo.ee',
+        username='michaelherman',
+        email='michael@mherman.org',
         password='greaterthaneight'
     ))
     db.session.commit()
@@ -70,4 +74,4 @@ def cov():
 
 
 if __name__ == '__main__':
-    cli() 
+    cli()
