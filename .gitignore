@@ -3,3 +3,5 @@ env
 .directory
 .idea
 services/users/htmlcov
+node_modules
+node_modules
